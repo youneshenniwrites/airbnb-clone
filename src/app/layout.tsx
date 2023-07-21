@@ -1,5 +1,6 @@
 import RegisterModal from "@/components/modals/RegisterModal";
 import Navbar from "@/components/navbar/Navbar";
+import ToasterProvider from "@/providers/ToasterProvider";
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
+        <ToasterProvider />
         <RegisterModal />
         <Navbar />
         {children}
