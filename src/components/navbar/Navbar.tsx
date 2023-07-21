@@ -1,5 +1,6 @@
 import Container from "../Container";
 import Logo from "./Logo";
+import Search from "./Search";
 
 export default function Navbar() {
   return (
@@ -17,6 +18,7 @@ export default function Navbar() {
           "
           >
             <Logo />
+            <Search />
           </div>
         </Container>
       </div>
