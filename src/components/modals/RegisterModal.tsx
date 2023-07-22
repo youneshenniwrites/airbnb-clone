@@ -31,12 +31,15 @@ export default function RegisterModal() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setIsLoading(true);
+
     const response = await registerUser(data);
 
     if (response instanceof Error) {
       const errorMessage = getErrorMessageFromAxiosError(response);
       toast.error(errorMessage);
     } else {
+      toast.success("Registered!");
       registerModal.onClose();
     }
 

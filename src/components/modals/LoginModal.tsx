@@ -2,8 +2,8 @@
 
 import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
-import { registerUser } from "@/services/apiService";
-import { getErrorMessageFromAxiosError } from "@/utils";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -16,6 +16,7 @@ import Input from "../inputs/Input";
 import Modal from "./Modal";
 
 export default function LoginModal() {
+  const router = useRouter();
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
 
@@ -27,39 +28,38 @@ export default function LoginModal() {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const response = await registerUser(data);
+    setIsLoading(true);
 
-    if (response instanceof Error) {
-      const errorMessage = getErrorMessageFromAxiosError(response);
-      toast.error(errorMessage);
-    } else {
-      registerModal.onClose();
-    }
+    signIn("credentials", {
+      ...data,
+      redirect: false,
+    }).then((callback) => {
+      setIsLoading(false);
 
-    setIsLoading(false);
+      if (callback?.ok) {
+        toast.success("Logged in");
+        router.refresh();
+        loginModal.onClose();
+      }
+
+      if (callback?.error) {
+        toast.error(callback.error);
+      }
+    });
   };
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading title="Welcome to Airbnb" subtitle="Create an account!" />
+      <Heading title="Welcome back" subtitle="Login to your account!" />
       <Input
         id="email"
         label="Email"
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
-      />
-      <Input
-        id="name"
-        label="Name"
         disabled={isLoading}
         register={register}
         errors={errors}
@@ -122,7 +122,7 @@ export default function LoginModal() {
     <Modal
       disabled={isLoading}
       isOpen={loginModal.isOpen}
-      title="Register"
+      title="Login"
       actionLabel="Continue"
       onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
