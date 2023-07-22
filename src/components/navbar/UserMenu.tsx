@@ -3,6 +3,7 @@
 import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 import { User } from "@prisma/client";
+import { signOut } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
@@ -61,7 +62,7 @@ export default function UserMenu({
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar />
+            <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>
@@ -90,7 +91,7 @@ export default function UserMenu({
                 <MenuItem label="My properties" onClick={() => {}} />
                 <MenuItem label="Airbnb your home" onClick={() => {}} />
                 <hr />
-                <MenuItem label="Logout" onClick={() => {}} />
+                <MenuItem label="Logout" onClick={() => signOut()} />
               </>
             ) : (
               <>
