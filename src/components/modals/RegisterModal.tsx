@@ -1,18 +1,18 @@
 "use client";
 
-import axios from "axios";
+import useRegisterModal from "@/hooks/useRegisterModal";
+import { registerUser } from "@/services/apiService";
+import { getErrorMessageFromAxiosError } from "@/utils";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-
-import useRegisterModal from "@/hooks/useRegisterModal";
 import toast from "react-hot-toast";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+
+import Button from "../Button";
 import Heading from "../Heading";
 import Input from "../inputs/Input";
 import Modal from "./Modal";
-
-import Button from "../Button";
 
 export default function RegisterModal() {
   const registerModal = useRegisterModal();
@@ -30,18 +30,17 @@ export default function RegisterModal() {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const response = await registerUser(data);
 
-    axios
-      .post("/api/register", data)
-      .then(() => {
-        registerModal.onClose();
-      })
-      .catch(() => toast.error("Something went wrong."))
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if (response instanceof Error) {
+      const errorMessage = getErrorMessageFromAxiosError(response);
+      toast.error(errorMessage);
+    } else {
+      registerModal.onClose();
+    }
+
+    setIsLoading(false);
   };
 
   const bodyContent = (
