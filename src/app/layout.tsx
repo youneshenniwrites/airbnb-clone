@@ -2,6 +2,7 @@ import LoginModal from "@/components/modals/LoginModal";
 import RegisterModal from "@/components/modals/RegisterModal";
 import Navbar from "@/components/navbar/Navbar";
 import ToasterProvider from "@/providers/ToasterProvider";
+import getCurrentUser from "@/utils/getCurrentUser";
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
@@ -13,18 +14,19 @@ export const metadata: Metadata = {
   description: "Feel like home anywhere",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const currentUser = await getCurrentUser();
   return (
     <html lang="en">
       <body className={font.className}>
         <ToasterProvider />
         <LoginModal />
         <RegisterModal />
-        <Navbar />
+        <Navbar currentUser={currentUser} />
         {children}
       </body>
     </html>

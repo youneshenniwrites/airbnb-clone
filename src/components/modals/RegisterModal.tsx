@@ -2,7 +2,7 @@
 
 import useRegisterModal from "@/hooks/useRegisterModal";
 import { registerUser } from "@/services/apiService";
-import { getErrorMessageFromAxiosError } from "@/utils";
+import { getErrorMessageFromAxiosError as getErrorMessage } from "@/utils/getErrorMessage";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -36,7 +36,7 @@ export default function RegisterModal() {
     const response = await registerUser(data);
 
     if (response instanceof Error) {
-      const errorMessage = getErrorMessageFromAxiosError(response);
+      const errorMessage = getErrorMessage(response);
       toast.error(errorMessage);
     } else {
       toast.success("Registered!");
