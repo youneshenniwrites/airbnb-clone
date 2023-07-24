@@ -9,3 +9,12 @@ export async function registerUser(data: FieldValues) {
     return error;
   }
 }
+
+export async function createListing(data: FieldValues) {
+  try {
+    const response = await axios.post("/api/listings", data);
+    return response.data;
+  } catch (error) {
+    throw new Error("Something went wrong.");
+  }
+}

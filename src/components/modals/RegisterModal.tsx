@@ -37,17 +37,16 @@ export default function RegisterModal() {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
 
-    const response = await registerUser(data);
-
-    if (response instanceof Error) {
-      const errorMessage = getErrorMessage(response);
-      toast.error(errorMessage);
-    } else {
+    try {
+      await registerUser(data);
       toast.success("Registered!");
       registerModal.onClose();
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const switchToSignIn = useCallback(() => {
