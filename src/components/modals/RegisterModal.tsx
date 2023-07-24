@@ -4,12 +4,13 @@ import useRegisterModal from "@/hooks/useRegisterModal";
 import { registerUser } from "@/services/apiService";
 import { getErrorMessageFromAxiosError as getErrorMessage } from "@/utils/getErrorMessage";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 
+import useLoginModal from "@/hooks/useLoginModal";
 import Button from "../Button";
 import Heading from "../Heading";
 import Input from "../inputs/Input";
@@ -17,6 +18,8 @@ import Modal from "./Modal";
 
 export default function RegisterModal() {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -46,6 +49,11 @@ export default function RegisterModal() {
 
     setIsLoading(false);
   };
+
+  const switchToSignIn = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -104,7 +112,7 @@ export default function RegisterModal() {
         <p>
           Already have an account?
           <span
-            onClick={registerModal.onClose}
+            onClick={switchToSignIn}
             className="
               text-neutral-800
               cursor-pointer 
