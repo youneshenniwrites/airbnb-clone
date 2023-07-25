@@ -41,7 +41,7 @@ export default function useFavourite({ listingId, currentUser }: Favourite) {
 
         await request();
         router.refresh();
-        toast.success("Success");
+        toast.success("Favourites updated");
       } catch (error) {
         toast.error("Something went wrong.");
       }
