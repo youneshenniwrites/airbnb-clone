@@ -1,5 +1,6 @@
 "use client";
 
+import { ImageFile } from "@/types";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useCallback } from "react";
@@ -10,7 +11,6 @@ type ImageUploadProps = {
   value: string;
 };
 
-type ImageFile = { info: { secure_url: string } };
 export default function ImageUpload({ onChange, value }: ImageUploadProps) {
   const handleUpload = useCallback(
     (result: ImageFile): void => {

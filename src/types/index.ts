@@ -16,3 +16,5 @@ export type RequestListing = {
 export type RequestUser = Omit<User, "hashedPassword"> & {
   password: string;
 };
+
+export type ImageFile = { info: { secure_url: string } };
