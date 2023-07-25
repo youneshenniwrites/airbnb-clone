@@ -2,6 +2,7 @@ import Container from "@/components/Container";
 import EmptyState from "@/components/EmptyState";
 import ListingCard from "@/components/listings/ListingCard";
 import { getCurrentUser, getListings } from "@/services/backend";
+import { Listing } from "@prisma/client";
 
 export default async function Home() {
   const listings = await getListings();
@@ -26,7 +27,7 @@ export default async function Home() {
             gap-8
           "
       >
-        {listings.map((listing: any) => (
+        {listings.map((listing: Listing) => (
           <ListingCard
             currentUser={currentUser}
             key={listing.id}
