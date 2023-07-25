@@ -1,4 +1,6 @@
-export type Listing = {
+import { User } from "@prisma/client";
+
+export type RequestListing = {
   title: string;
   description: string;
   imageSrc: string;
@@ -11,8 +13,6 @@ export type Listing = {
   userId: string;
 };
 
-export type RequestBody = {
-  email: string;
-  name: string;
+export type RequestUser = Omit<User, "hashedPassword"> & {
   password: string;
 };

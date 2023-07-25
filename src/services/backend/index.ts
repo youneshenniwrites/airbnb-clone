@@ -1,16 +1,18 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/libs/prismadb";
-import { Listing, RequestBody } from "@/types";
+import { RequestListing, RequestUser } from "@/types";
+import { getErrorMessageFromPrisma } from "@/utils/getErrorMessage";
+import { Listing, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { getServerSession } from "next-auth/next";
 
-export async function createListing(data: Listing) {
+export async function createListing(data: RequestListing): Promise<Listing> {
   return await prisma.listing.create({
     data,
   });
 }
 
-export async function createUser(data: RequestBody) {
+export async function createUser(data: RequestUser): Promise<User> {
   const { email, name, password } = data;
   const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -23,7 +25,7 @@ export async function createUser(data: RequestBody) {
   });
 }
 
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<User | null> {
   try {
     const session = await getSession();
 
@@ -41,7 +43,7 @@ export async function getCurrentUser() {
       return null;
     }
 
-    return currentUser;
+    return currentUser as User;
   } catch (error) {
     return null;
   }
@@ -57,4 +59,18 @@ export async function findUserByEmail(email: string) {
       email,
     },
   });
+}
+
+export async function getListings(): Promise<Listing[]> {
+  try {
+    const listings: Listing[] = await prisma.listing.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return listings;
+  } catch (error) {
+    throw new Error(getErrorMessageFromPrisma(error));
+  }
 }
