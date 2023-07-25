@@ -1,5 +1,5 @@
 import { createListing, getCurrentUser } from "@/services/backend";
-import { Listing } from "@/types";
+import { RequestListing } from "@/types";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     price,
   } = body;
 
-  const listingData: Listing = {
+  const listingData: RequestListing = {
     title,
     description,
     imageSrc,
