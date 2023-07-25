@@ -3,7 +3,7 @@ import RegisterModal from "@/components/modals/RegisterModal";
 import RentModal from "@/components/modals/RentModal";
 import Navbar from "@/components/navbar/Navbar";
 import ToasterProvider from "@/providers/ToasterProvider";
-import getCurrentUser from "@/utils/getCurrentUser";
+import { getCurrentUser } from "@/services/backend";
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";

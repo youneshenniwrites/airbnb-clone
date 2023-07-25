@@ -1,4 +1,5 @@
 import prisma from "@/libs/prismadb";
+import { findUserByEmail } from "@/services/backend";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bcrypt from "bcrypt";
 import NextAuth, { AuthOptions } from "next-auth";
@@ -28,26 +29,22 @@ export const authOptions: AuthOptions = {
           throw new Error("Invalid credentials");
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
+        const existingUser = await findUserByEmail(credentials.email);
 
-        if (!user || !user?.hashedPassword) {
+        if (!existingUser || !existingUser?.hashedPassword) {
           throw new Error("Invalid credentials");
         }
 
         const isCorrectPassword = await bcrypt.compare(
           credentials.password,
-          user.hashedPassword
+          existingUser.hashedPassword
         );
 
         if (!isCorrectPassword) {
           throw new Error("Invalid credentials");
         }
 
-        return user;
+        return existingUser;
       },
     }),
   ],

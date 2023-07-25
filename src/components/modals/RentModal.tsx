@@ -2,7 +2,7 @@
 
 import { categories } from "@/config/homeCategories";
 import useRentModal from "@/hooks/useRentModal";
-import { createListing } from "@/services/apiService";
+import { createListing } from "@/services/frontend";
 import { getErrorMessageFromAxiosError as getErrorMessage } from "@/utils/getErrorMessage";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";

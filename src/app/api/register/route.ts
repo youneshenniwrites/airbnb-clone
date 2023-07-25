@@ -1,27 +1,11 @@
-import bcrypt from "bcrypt";
+import { createUser } from "@/services/backend";
+import { RequestBody } from "@/types";
 import { NextResponse } from "next/server";
-
-import prisma from "@/libs/prismadb";
-
-type RequestBody = {
-  email: string;
-  name: string;
-  password: string;
-};
 
 export async function POST(request: Request) {
   const body: RequestBody = await request.json();
   const { email, name, password } = body;
 
-  const hashedPassword = await bcrypt.hash(password, 12);
-
-  const user = await prisma.user.create({
-    data: {
-      email,
-      name,
-      hashedPassword,
-    },
-  });
-
+  const user = await createUser({ email, name, password });
   return NextResponse.json(user);
 }

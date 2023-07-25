@@ -1,7 +1,7 @@
 "use client";
 
 import useRegisterModal from "@/hooks/useRegisterModal";
-import { registerUser } from "@/services/apiService";
+import { registerUser } from "@/services/frontend";
 import { getErrorMessageFromAxiosError as getErrorMessage } from "@/utils/getErrorMessage";
 import { signIn } from "next-auth/react";
 import { useCallback, useState } from "react";
