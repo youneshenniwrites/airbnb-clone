@@ -8,9 +8,7 @@ export default async function Home() {
   const listings = await getListings();
   const currentUser = await getCurrentUser();
 
-  if (listings.length === 0) {
-    return <EmptyState showReset />;
-  }
+  if (listings.length === 0) return <EmptyState showReset />;
 
   return (
     <Container>

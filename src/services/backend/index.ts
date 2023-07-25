@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/libs/prismadb";
-import { RequestListing, RequestUser } from "@/types";
+import { ListingParams, RequestListing, RequestUser } from "@/types";
 import { getErrorMessageFromPrisma } from "@/utils/getErrorMessage";
 import { Listing, User } from "@prisma/client";
 import bcrypt from "bcrypt";
@@ -63,13 +63,35 @@ export async function findUserByEmail(email: string) {
 
 export async function getListings(): Promise<Listing[]> {
   try {
-    const listings: Listing[] = await prisma.listing.findMany({
+    const listings = await prisma.listing.findMany({
       orderBy: {
         createdAt: "desc",
       },
     });
 
     return listings;
+  } catch (error) {
+    throw new Error(getErrorMessageFromPrisma(error));
+  }
+}
+
+export async function getListingById(
+  params: ListingParams
+): Promise<Listing | null> {
+  const { listingId } = params;
+  try {
+    const listing = await prisma.listing.findUnique({
+      where: {
+        id: listingId,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!listing) return null;
+
+    return listing;
   } catch (error) {
     throw new Error(getErrorMessageFromPrisma(error));
   }

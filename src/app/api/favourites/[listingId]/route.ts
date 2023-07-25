@@ -2,12 +2,12 @@ import { getCurrentUser } from "@/services/backend";
 import { NextResponse } from "next/server";
 
 import prisma from "@/libs/prismadb";
+import { ListingParams } from "@/types";
 
-interface Params {
-  listingId?: string;
-}
-
-export async function POST(_request: Request, { params }: { params: Params }) {
+export async function POST(
+  _request: Request,
+  { params }: { params: ListingParams }
+) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -38,7 +38,7 @@ export async function POST(_request: Request, { params }: { params: Params }) {
 
 export async function DELETE(
   _request: Request,
-  { params }: { params: Params }
+  { params }: { params: ListingParams }
 ) {
   const currentUser = await getCurrentUser();
 
