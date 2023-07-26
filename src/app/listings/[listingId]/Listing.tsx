@@ -4,21 +4,17 @@ import Container from "@/components/Container";
 import ListingHead from "@/components/listings/ListingHead";
 import ListingInfo from "@/components/listings/ListingInfo";
 import ListingReservation from "@/components/listings/ListingReservation";
+import { initialDateRange } from "@/config/dateRange";
 import { categories } from "@/config/homeCategories";
 import useLoginModal from "@/hooks/useLoginModal";
+import useTotalPrice from "@/hooks/useTotalPrice";
 import { Listing, Reservation, User } from "@prisma/client";
 import axios from "axios";
-import { differenceInDays, eachDayOfInterval } from "date-fns";
+import { eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Range } from "react-date-range";
 import toast from "react-hot-toast";
-
-const initialDateRange = {
-  startDate: new Date(),
-  endDate: new Date(),
-  key: "selection",
-};
 
 type ListingProps = {
   listing: Listing & { user?: User };
@@ -54,8 +50,9 @@ export default function Listing({
   }, [listing.category]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+
+  const totalPrice = useTotalPrice(dateRange, listing.price);
 
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
@@ -82,18 +79,6 @@ export default function Listing({
         setIsLoading(false);
       });
   }, [totalPrice, dateRange, listing?.id, router, currentUser, loginModal]);
-
-  useEffect(() => {
-    if (dateRange.startDate && dateRange.endDate) {
-      const dayCount = differenceInDays(dateRange.endDate, dateRange.startDate);
-
-      if (dayCount && listing.price) {
-        setTotalPrice(dayCount * listing.price);
-      } else {
-        setTotalPrice(listing.price);
-      }
-    }
-  }, [dateRange, listing.price]);
 
   return (
     <Container>
