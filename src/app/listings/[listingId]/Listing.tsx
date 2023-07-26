@@ -8,9 +8,9 @@ import { Listing, Reservation, User } from "@prisma/client";
 import { useMemo } from "react";
 
 type ListingProps = {
-  listing: Listing;
+  listing: Listing & { user?: User };
   currentUser?: User | null;
-  reservation?: Reservation;
+  reservations?: Reservation[];
 };
 export default function Listing({ listing, currentUser }: ListingProps) {
   const category = useMemo(() => {
