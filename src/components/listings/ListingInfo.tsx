@@ -17,7 +17,7 @@ type ListingInfoProps = {
   guestCount: number;
   roomCount: number;
   bathroomCount: number;
-  category:
+  listingCategory:
     | {
         icon: IconType;
         label: string;
@@ -33,7 +33,7 @@ export default function ListingInfo({
   guestCount,
   roomCount,
   bathroomCount,
-  category,
+  listingCategory,
   locationValue,
 }: ListingInfoProps) {
   const { getByValue } = useCountries();
@@ -72,11 +72,11 @@ export default function ListingInfo({
         </div>
       </div>
       <hr />
-      {category && (
+      {listingCategory && (
         <ListingCategory
-          icon={category.icon}
-          label={category?.label}
-          description={category?.description}
+          icon={listingCategory.icon}
+          label={listingCategory?.label}
+          description={listingCategory?.description}
         />
       )}
       <hr />

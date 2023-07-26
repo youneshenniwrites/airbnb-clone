@@ -37,7 +37,7 @@ export default function Listing({
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
 
-    reservations.forEach((reservation: any) => {
+    reservations.forEach((reservation) => {
       const range = eachDayOfInterval({
         start: new Date(reservation.startDate),
         end: new Date(reservation.endDate),
@@ -49,7 +49,7 @@ export default function Listing({
     return dates;
   }, [reservations]);
 
-  const category = useMemo(() => {
+  const getListingCategory = useMemo(() => {
     return categories.find((items) => items.label === listing.category);
   }, [listing.category]);
 
@@ -111,42 +111,42 @@ export default function Listing({
             imageSrc={listing.imageSrc}
             currentUser={currentUser}
           />
-        </div>
-        <div
-          className="
+          <div
+            className="
               grid 
               grid-cols-1 
               md:grid-cols-7 
               md:gap-10 
               mt-6
             "
-        >
-          <ListingInfo
-            user={listing.user}
-            category={category}
-            description={listing.description}
-            roomCount={listing.roomCount}
-            guestCount={listing.guestCount}
-            bathroomCount={listing.bathroomCount}
-            locationValue={listing.locationValue}
-          />
-          <div
-            className="
+          >
+            <ListingInfo
+              user={listing.user}
+              listingCategory={getListingCategory}
+              description={listing.description}
+              roomCount={listing.roomCount}
+              guestCount={listing.guestCount}
+              bathroomCount={listing.bathroomCount}
+              locationValue={listing.locationValue}
+            />
+            <div
+              className="
                 order-first 
                 mb-10 
                 md:order-last 
                 md:col-span-3
               "
-          >
-            <ListingReservation
-              price={listing.price}
-              totalPrice={totalPrice}
-              onChangeDate={(value) => setDateRange(value)}
-              dateRange={dateRange}
-              onSubmit={onCreateReservation}
-              disabled={isLoading}
-              disabledDates={disabledDates}
-            />
+            >
+              <ListingReservation
+                price={listing.price}
+                totalPrice={totalPrice}
+                onChangeDate={(value) => setDateRange(value)}
+                dateRange={dateRange}
+                onSubmit={onCreateReservation}
+                disabled={isLoading}
+                disabledDates={disabledDates}
+              />
+            </div>
           </div>
         </div>
       </div>
