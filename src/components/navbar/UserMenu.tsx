@@ -5,6 +5,7 @@ import useRegisterModal from "@/hooks/useRegisterModal";
 import useRentModal from "@/hooks/useRentModal";
 import { User } from "@prisma/client";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
@@ -15,6 +16,7 @@ export default function UserMenu({
 }: {
   currentUser: User | null;
 }) {
+  const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [isOpen, setIsOpen] = useState(false);
@@ -95,7 +97,10 @@ export default function UserMenu({
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem label="My trips" onClick={() => {}} />
+                <MenuItem
+                  label="My trips"
+                  onClick={() => router.push("/trips")}
+                />
                 <MenuItem label="My favorites" onClick={() => {}} />
                 <MenuItem label="My reservations" onClick={() => {}} />
                 <MenuItem label="My properties" onClick={() => {}} />
