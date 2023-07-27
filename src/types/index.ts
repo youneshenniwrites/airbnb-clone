@@ -23,6 +23,10 @@ export type ListingParams = {
   listingId?: string;
 };
 
+export type ListingsParams = {
+  userId?: string;
+};
+
 export type ReservationParams = {
   listingId?: string;
   userId?: string;

@@ -2,6 +2,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/libs/prismadb";
 import {
   ListingParams,
+  ListingsParams,
   RequestListing,
   RequestUser,
   ReservationParams,
@@ -66,9 +67,18 @@ export async function findUserByEmail(email: string) {
   });
 }
 
-export async function getListings(): Promise<Listing[]> {
+export async function getListings(params: ListingsParams): Promise<Listing[]> {
   try {
+    const { userId } = params;
+
+    let query: ListingsParams = {};
+
+    if (userId) {
+      query.userId = userId;
+    }
+
     const listings = await prisma.listing.findMany({
+      where: query,
       orderBy: {
         createdAt: "desc",
       },
@@ -83,8 +93,9 @@ export async function getListings(): Promise<Listing[]> {
 export async function getListingById(
   params: ListingParams
 ): Promise<Listing | null> {
-  const { listingId } = params;
   try {
+    const { listingId } = params;
+
     const listing = await prisma.listing.findUnique({
       where: {
         id: listingId,
