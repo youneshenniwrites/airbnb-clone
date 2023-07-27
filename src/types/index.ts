@@ -22,3 +22,9 @@ export type ImageFile = { info: { secure_url: string } };
 export type ListingParams = {
   listingId?: string;
 };
+
+export type ReservationParams = {
+  listingId?: string;
+  userId?: string;
+  authorId?: string;
+};

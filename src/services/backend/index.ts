@@ -1,6 +1,11 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/libs/prismadb";
-import { ListingParams, RequestListing, RequestUser } from "@/types";
+import {
+  ListingParams,
+  RequestListing,
+  RequestUser,
+  ReservationParams,
+} from "@/types";
 import { getErrorMessageFromPrisma } from "@/utils/getErrorMessage";
 import { Listing, User } from "@prisma/client";
 import bcrypt from "bcrypt";
@@ -93,6 +98,40 @@ export async function getListingById(
 
     return listing;
   } catch (error) {
+    throw new Error(getErrorMessageFromPrisma(error));
+  }
+}
+
+export async function getReservations(params: ReservationParams) {
+  try {
+    const { listingId, userId, authorId } = params;
+
+    let query: ReservationParams & { listing?: { userId?: string } } = {};
+
+    if (listingId) {
+      query.listingId = listingId;
+    }
+
+    if (userId) {
+      query.userId = userId;
+    }
+
+    if (authorId) {
+      query.listing = { userId: authorId };
+    }
+
+    const reservations = await prisma.reservation.findMany({
+      where: query,
+      include: {
+        listing: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return reservations;
+  } catch (error: unknown) {
     throw new Error(getErrorMessageFromPrisma(error));
   }
 }
