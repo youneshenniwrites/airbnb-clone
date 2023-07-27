@@ -3,7 +3,6 @@ import EmptyState from "@/components/EmptyState";
 import ListingCard from "@/components/listings/ListingCard";
 import { getCurrentUser, getListings } from "@/services/backend";
 import { ListingsParams } from "@/types";
-import { Listing } from "@prisma/client";
 
 type HomeProps = {
   searchParams: ListingsParams;
@@ -30,7 +29,7 @@ export default async function Home({ searchParams }: HomeProps) {
             gap-8
           "
       >
-        {listings.map((listing: Listing) => (
+        {listings.map((listing) => (
           <ListingCard
             currentUser={currentUser}
             key={listing.id}

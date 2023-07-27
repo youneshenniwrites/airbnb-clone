@@ -10,13 +10,10 @@ import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 
 type PropertiesProps = {
-  properties: Listing[];
+  listings: Listing[];
   currentUser?: User | null;
 };
-export default function Properties({
-  properties,
-  currentUser,
-}: PropertiesProps) {
+export default function Properties({ listings, currentUser }: PropertiesProps) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
 
@@ -25,9 +22,9 @@ export default function Properties({
       setDeletingId(id);
 
       axios
-        .delete(`/api/properties/${id}`)
+        .delete(`/api/listings/${id}`)
         .then(() => {
-          toast.success("Property deleted");
+          toast.success("Listing deleted");
           router.refresh();
         })
         .catch((error) => {
@@ -56,13 +53,13 @@ export default function Properties({
           gap-8
         "
       >
-        {properties.map((property) => (
+        {listings.map((listing) => (
           <ListingCard
-            key={property.id}
-            data={property}
-            actionId={property.id}
+            key={listing.id}
+            data={listing}
+            actionId={listing.id}
             onAction={onCancel}
-            disabled={deletingId === property.id}
+            disabled={deletingId === listing.id}
             actionLabel="Delete property"
             currentUser={currentUser}
           />

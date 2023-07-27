@@ -1,6 +1,5 @@
 import EmptyState from "@/components/EmptyState";
 import { getCurrentUser, getListings } from "@/services/backend";
-import { Listing } from "@prisma/client";
 import Properties from "./Properties";
 
 export default async function PropertiesPage() {
@@ -10,11 +9,11 @@ export default async function PropertiesPage() {
     return <EmptyState title="Unauthorized" subtitle="Please login" />;
   }
 
-  const properties: Listing[] = await getListings({
+  const listings = await getListings({
     userId: currentUser?.id,
   });
 
-  if (properties.length === 0) {
+  if (listings.length === 0) {
     return (
       <EmptyState
         title="No properties found"
@@ -23,5 +22,5 @@ export default async function PropertiesPage() {
     );
   }
 
-  return <Properties properties={properties} currentUser={currentUser} />;
+  return <Properties listings={listings} currentUser={currentUser} />;
 }
