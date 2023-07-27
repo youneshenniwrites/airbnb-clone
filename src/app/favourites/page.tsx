@@ -3,10 +3,10 @@ import { getCurrentUser, getFavouriteListings } from "@/services/backend";
 import Favourites from "./Favourites";
 
 export default async function FavouritesPage() {
-  const listings = await getFavouriteListings();
+  const favourites = await getFavouriteListings();
   const currentUser = await getCurrentUser();
 
-  if (listings.length === 0) {
+  if (favourites.length === 0) {
     return (
       <EmptyState
         title="No favourites found"
@@ -15,5 +15,5 @@ export default async function FavouritesPage() {
     );
   }
 
-  return <Favourites listings={listings} currentUser={currentUser} />;
+  return <Favourites favourites={favourites} currentUser={currentUser} />;
 }
