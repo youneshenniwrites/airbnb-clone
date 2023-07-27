@@ -41,6 +41,7 @@ export default function RegisterModal() {
       await registerUser(data);
       toast.success("Registered!");
       registerModal.onClose();
+      loginModal.onOpen();
     } catch (error: unknown) {
       const errorMessage = getErrorMessage(error);
       toast.error(errorMessage);
