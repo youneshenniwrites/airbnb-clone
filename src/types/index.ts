@@ -32,3 +32,12 @@ export type ReservationParams = {
   userId?: string;
   authorId?: string;
 };
+
+export type SearchQuery = {
+  locationValue: string | undefined;
+  guestCount: number;
+  roomCount: number;
+  bathroomCount: number;
+  startDate?: string;
+  endDate?: string;
+};
