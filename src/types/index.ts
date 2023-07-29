@@ -25,6 +25,29 @@ export type ListingParams = {
 
 export type ListingsParams = {
   userId?: string;
+  guestCount?: { gte: number };
+  roomCount?: { gte: number };
+  bathroomCount?: { gte: number };
+  startDate?: string;
+  endDate?: string;
+  locationValue?: string;
+  category?: string;
+  NOT?: {
+    reservations: {
+      some: {
+        OR: [
+          {
+            endDate: { gte: string };
+            startDate: { lte: string };
+          },
+          {
+            startDate: { lte: string };
+            endDate: { gte: string };
+          }
+        ];
+      };
+    };
+  };
 };
 
 export type ReservationParams = {
